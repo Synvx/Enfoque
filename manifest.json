@@ -1,0 +1,16 @@
+{
+  "name": "Enfoque Dashboard",
+  "short_name": "Enfoque",
+  "description": "Un panel de productividad simple y premium con reloj, temporizador y tareas.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d0f1a",
+  "theme_color": "#0d0f1a",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNGVjY2EzIiBzdHJva2Utd2lkdGg9IjgiIC8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMTAiIGZpbGw9IiM0ZWNjYTMiIC8+PC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
