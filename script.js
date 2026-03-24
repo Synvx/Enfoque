@@ -60,7 +60,6 @@ const studyTimeInput = document.getElementById("study-time-input");
 const restTimeInput = document.getElementById("rest-time-input");
 const loopsInput = document.getElementById("loops-input");
 // Audio Elements
-const bgAudioSelect = document.getElementById("bg-audio-select");
 const bgSound = document.getElementById("bg-sound");
 const bgAudioBtn = document.getElementById("bg-audio-btn");
 const bgVolumeSlider = document.getElementById("bg-volume-slider");
@@ -98,10 +97,6 @@ function loadConfig() {
       if (bgSound) bgSound.volume = bgVolumeSlider.value;
     }
     
-    if (bgAudioSelect && cfg.bgAudio) {
-      bgAudioSelect.value = cfg.bgAudio;
-      if (bgSound) bgSound.src = cfg.bgAudio;
-    }
     
     // Theme and Color
     if (cfg.theme === "light") {
@@ -131,7 +126,6 @@ function saveConfig() {
     rest: restTimeInput ? restTimeInput.value : 10,
     loops: loopsInput ? loopsInput.value : 4,
     volume: bgVolumeSlider ? parseFloat(bgVolumeSlider.value) : 0.5,
-    bgAudio: bgAudioSelect ? bgAudioSelect.value : "https://assets.mixkit.co/active_storage/sfx/123/123-preview.mp3",
     theme: bodyEl.classList.contains("light-mode") ? "light" : "dark",
     color: document.documentElement.style.getPropertyValue("--accent-color").trim() || "#4ecca3"
   }));
@@ -218,17 +212,6 @@ if (bgVolumeSlider) {
   });
 }
 
-if (bgAudioSelect) {
-  bgAudioSelect.addEventListener("change", (e) => {
-    if (bgSound) {
-      bgSound.src = e.target.value;
-      if (isBgAudioPlaying) {
-        bgSound.play().catch(err => console.log(err));
-      }
-    }
-    saveConfig();
-  });
-}
 
 // --- Top Nav Handlers ---
 if (themeBtn) {
@@ -242,22 +225,31 @@ const exitFocusBtn = document.getElementById("exit-focus-btn");
 
 if (focusModeBtn) {
   focusModeBtn.addEventListener("click", () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => console.log(err));
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+    if (!isFullscreen) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      }
       bodyEl.classList.add("focus-mode");
     } else {
       if (document.exitFullscreen) {
-        document.exitFullscreen();
-        bodyEl.classList.remove("focus-mode");
+        document.exitFullscreen().catch(err => console.log(err));
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
       }
+      bodyEl.classList.remove("focus-mode");
     }
   });
 }
 
 if (exitFocusBtn) {
   exitFocusBtn.addEventListener("click", () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
+    if (document.exitFullscreen && document.fullscreenElement) {
+      document.exitFullscreen().catch(err => console.log(err));
+    } else if (document.webkitExitFullscreen && document.webkitFullscreenElement) {
+      document.webkitExitFullscreen();
     }
     bodyEl.classList.remove("focus-mode");
   });
